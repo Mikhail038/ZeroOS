@@ -5,10 +5,10 @@ LDPARAMS = -melf_i386
 objects = loader.o kernel.o
 
 %.o: %.cpp
-	g++ S (GPPPARAMS) -o S@ -c S<
+	g++ $(GPPPARAMS) -o $@ -c $<
 
 %.o: %.s
-	as S(ASPARAMS) -o $@ $<
+	as $(ASPARAMS) -o $@ $<
 
 mykernel.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
