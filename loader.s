@@ -19,10 +19,10 @@ loader:
 
 _stop:
     cli
-    halt
+    hlt
     jmp _stop
 
 
 .section .bss
-.space 2*1024*1024; 2MiB
+.space 2*1024*1024; #2MiB
 kernel_stack:
