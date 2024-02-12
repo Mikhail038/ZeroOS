@@ -1,6 +1,6 @@
-.set MAGIC, 0x1BAD002 
+.set MAGIC, 0x1BADB002 
 .set FLAGS, (1<<0 | 1<<1)
-.set CHEKSUM, -(MAGIC + FLAGS)
+.set CHECKSUM, -(MAGIC + FLAGS)
 
 .section .multiboot
     .long MAGIC
