@@ -9,7 +9,7 @@ SECTIONS
 
     .text :
     {
-        *(.multiboot)
+        *(.multiboot)z
         *(.text*)
         *(.rodata)
     }
