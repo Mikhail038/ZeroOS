@@ -1,5 +1,5 @@
 GPPPARAMS = -m32
-ASPARAMS =
+ASPARAMS = --32
 LDPARAMS =
 
 objects = loader.o kernel.o
