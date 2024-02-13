@@ -3,6 +3,7 @@
 .set CHECKSUM, -(MAGIC + FLAGS)
 
 .section .multiboot
+	.align 4
     .long MAGIC
     .long FLAGS
     .long CHECKSUM
@@ -24,5 +25,6 @@ _stop:
 
 
 .section .bss
-.space 2*1024*1024; #2MiB
+.align 16
+.space 4096; #2MiB
 kernel_stack:
