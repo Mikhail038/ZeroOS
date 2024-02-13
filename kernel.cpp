@@ -23,6 +23,18 @@ void putline(const int8_t* line)
     }
 }
 
+typedef void (*constructor)();
+extern "C" constructor start_ctors;
+extern "C" constructor end_ctors;
+extern "C" void call_constructors()
+{
+    for(constructor* i = &start_ctors; i != &end_ctors; ++i)
+    {
+        (*i)();
+    }
+}
+
+
 extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
 {
     putline("Hello User! ===ZOS=== Mikhail038, Dash8f");
