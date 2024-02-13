@@ -1,10 +1,14 @@
+# =========================================================================================== 
+
 GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
 objects = loader.o kernel.o
 
-TRGT = mykernel
+TRGT = zos_kernel
+
+# =========================================================================================== 
 
 %.o: %.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<
@@ -29,15 +33,17 @@ $(TRGT).iso: $(TRGT).bin
 	@echo 'set default=0' >> iso/boot/grub/grub.cfg
 	@echo '' >> iso/boot/grub/grub.cfg
 	@echo 'menuentry "ZeroOS" {' >> iso/boot/grub/grub.cfg
-	@echo '   multiboot /boot/$(TRGT).bin' >> iso/boot/grub/grub.cfg
+	@echo '   multiboot  /boot/$(TRGT).bin' >> iso/boot/grub/grub.cfg
 	@echo '   boot' >> iso/boot/grub/grub.cfg
 	@echo '} ' >> iso/boot/grub/grub.cfg
 	@grub-mkrescue --output=$@ iso
 	@echo '=== ISO built ==='
 
-# ===========================================================================================
+# =========================================================================================== 
 
 VM_NAME = ZeroOS Tester
+
+# =========================================================================================== 
 
 run: image
 	@echo '=== VM started ==='
@@ -58,4 +64,6 @@ clean:
 	@rm -rf *.iso
 	@echo '=== Cleaned (.o .bin .iso) ==='
 
-# (killall VirtualBoxVM) || true
+# ===========================================================================================
+
+# (killall VirtualBoxVM) || true                                            
