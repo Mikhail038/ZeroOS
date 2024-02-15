@@ -6,6 +6,9 @@ LDPARAMS = -melf_i386
 
 # GPPPARAMS += -g -ggdb3
 
+DIRECTORIES = -IPorts
+GPPPARAMS += $(DIRECTORIES)
+
 OBJECTS = loader.o kernel.o gdt.o
 
 TRGT = zos_kernel
