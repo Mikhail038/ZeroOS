@@ -1,6 +1,9 @@
 #ifndef TYPES_HPP
 #define TYPES_HPP
 
+#define Kb 1024
+#define Mb 1024 * Kb
+
 using int8_t    = char;
 using uint8_t   = unsigned char;
 

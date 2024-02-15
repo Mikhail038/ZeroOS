@@ -4,12 +4,13 @@ GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-excep
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = loader.o kernel.o
+# GPPPARAMS += -g -ggdb3
+
+OBJECTS = loader.o kernel.o gdt.o
 
 TRGT = zos_kernel
 
 # =========================================================================================== 
-
 %.o: %.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<
 	@echo '=== Kernel built ==='
@@ -19,8 +20,8 @@ TRGT = zos_kernel
 	@echo '=== ASM entry built ==='
 
 
-$(TRGT).bin: linker.ld $(objects)
-	@ld $(LDPARAMS) -T $< -o $@ $(objects)
+$(TRGT).bin: linker.ld $(OBJECTS)
+	@ld $(LDPARAMS) -T $< -o $@ $(OBJECTS)
 	@echo '=== BIN built ==='
 
 
