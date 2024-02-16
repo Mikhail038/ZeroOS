@@ -11,18 +11,18 @@ public:
 
     ~PortSlow() {};
 
-    void        write(data_size_t data);
-    data_size_t read();
+    void        write(data_size_t data) const;
+    data_size_t read() const;
 };
 
 template <>
-void PortSlow<uint8_t>::write(uint8_t data)
+void PortSlow<uint8_t>::write(uint8_t data) const
 {
     __asm__ volatile("outb %1, %0\njmp 1f\n1: jmp 1f\n1:": : "a" (data), "Nd" (number));
 }
 
 template <>
-uint8_t PortSlow<uint8_t>::read()
+uint8_t PortSlow<uint8_t>::read() const
 {
     uint8_t result;
     __asm__ volatile("inb %1, %0": "=a" (result) : "Nd" (number));

@@ -109,3 +109,7 @@ uint32_t SegmentDescriptor::get_limit() const
 
     return result;
 }
+
+#undef GDT_SEGMENT_DATA_FLAGS
+#undef GDT_SEGMENT_CODE_FLAGS
+
