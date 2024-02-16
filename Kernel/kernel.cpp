@@ -16,20 +16,23 @@ extern "C" void call_constructors()
 
 extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
 {
-    uint16_t* video_memory_entry = (uint16_t*) 0xB8004;
-
-    Cell cell('Z', 0x42);
-
-    cell.set_fg_colour(Cell::black);
-    cell.set_bg_colour(Cell::white);
-
-    cell.set_char('V');
-
-    video_memory_entry[0] = *((uint16_t*) &cell);
-
-    // putline("Hello User! ===ZOS=== Mikhail038, Dash8f");
-
     GlobalDescriptorTable gdt;
+
+    Display display({' ', black, white});
+
+    display.print_welcome_z();
+
+    display.set_all_fg_colour(black);
+
+    display.print('L');
+    display.print('E');
+    display.print('H');
+    display.print('A');
+    display.print(' ');
+    display.print('L');
+    display.print('O');
+    display.print('H');
+    display.print('!');
 
     while (true);
 }
