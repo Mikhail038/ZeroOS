@@ -6,24 +6,37 @@ LDPARAMS = -melf_i386
 
 # GPPPARAMS += -g -ggdb3
 
-DIRECTORIES = -IPorts
+DIRECTORIES = -IPorts -IExtraLibraries -IGdt -IGui
 GPPPARAMS += $(DIRECTORIES)
 
-OBJECTS = loader.o kernel.o gdt.o
+OBJECTS_DIRECTORY = Objects
+
+OBJECTS = $(OBJECTS_DIRECTORY)/loader.o $(OBJECTS_DIRECTORY)/kernel.o $(OBJECTS_DIRECTORY)/gdt.o $(OBJECTS_DIRECTORY)/display.o
 
 TRGT = zos_kernel
 
 # =========================================================================================== 
-%.o: %.cpp
+
+all: MAKE_OBJ_DIR $(TRGT).bin
+
+$(OBJECTS_DIRECTORY)/display.o: Gui/display.cpp
+	@g++ $(GPPPARAMS) -o $@ -c $<
+	@echo '=== Display built ==='
+
+$(OBJECTS_DIRECTORY)/kernel.o: Kernel/kernel.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<
 	@echo '=== Kernel built ==='
 
-%.o: %.s
+$(OBJECTS_DIRECTORY)/gdt.o: Gdt/gdt.cpp
+	@g++ $(GPPPARAMS) -o $@ -c $<
+	@echo '=== GDT built ==='
+
+$(OBJECTS_DIRECTORY)/loader.o: Kernel/loader.s
 	@as $(ASPARAMS) -o $@ $<
 	@echo '=== ASM entry built ==='
 
 
-$(TRGT).bin: linker.ld $(OBJECTS)
+$(TRGT).bin: Kernel/linker.ld $(OBJECTS)
 	@ld $(LDPARAMS) -T $< -o $@ $(OBJECTS)
 	@echo '=== BIN built ==='
 
@@ -42,6 +55,9 @@ $(TRGT).iso: $(TRGT).bin
 	@echo '} ' >> iso/boot/grub/grub.cfg
 	@grub-mkrescue --output=$@ iso
 	@echo '=== ISO built ==='
+
+MAKE_OBJ_DIR:
+	@mkdir -p $(OBJECTS_DIRECTORY)/
 
 # =========================================================================================== 
 
@@ -62,11 +78,11 @@ install: $(TRGT).bin
 	@echo '=== BIN loaded to boot (do not forget to upd grub cfg) ==='
 
 clean:
-	@rm -rf *.o
+	@rm -rf $(OBJECTS_DIRECTORY)/*.o
 	@rm -rf *.bin
 	@rm -rf iso
 	@rm -rf *.iso
-	@echo '=== Cleaned (.o .bin .iso) ==='
+	@echo '=== Cleaned ($(OBJECTS_DIRECTORY)/.o .bin .iso) ==='
 
 # ===========================================================================================
 
