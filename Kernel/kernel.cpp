@@ -33,6 +33,9 @@ extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
     display.print('O');
     display.print('H');
     display.print('!');
+    display.print('\n');
+    display.print_line("qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm\n");
+    display.print('Z');
 
     while (true);
 }

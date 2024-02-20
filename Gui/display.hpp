@@ -98,9 +98,8 @@ public:
 
     void print_welcome_z();
 
-    void print(uint8_t character_);
-    void print_line(); //TODO
-
+    void print(int8_t character_);
+    void print_line(const int8_t* line);
 
     Line& operator[](uint16_t y);
     const Line& operator[](uint16_t y) const;

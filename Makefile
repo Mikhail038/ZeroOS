@@ -4,14 +4,16 @@ GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-excep
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-# GPPPARAMS += -g -ggdb3
+GPPPARAMS += -g -ggdb3
 
-DIRECTORIES = -IPorts -IExtraLibraries -IGdt -IGui
+DIRECTORIES = -IPorts -IExtraLibraries -IGdt -IGui -IInterrupts
 GPPPARAMS += $(DIRECTORIES)
 
 OBJECTS_DIRECTORY = Objects
 
-OBJECTS = $(OBJECTS_DIRECTORY)/loader.o $(OBJECTS_DIRECTORY)/kernel.o $(OBJECTS_DIRECTORY)/gdt.o $(OBJECTS_DIRECTORY)/display.o
+OBJECTS = $(OBJECTS_DIRECTORY)/loader.o $(OBJECTS_DIRECTORY)/kernel.o 
+OBJECTS += $(OBJECTS_DIRECTORY)/gdt.o $(OBJECTS_DIRECTORY)/display.o
+OBJECTS += $(OBJECTS_DIRECTORY)/irq.o
 
 TRGT = zos_kernel
 
@@ -26,6 +28,10 @@ $(OBJECTS_DIRECTORY)/display.o: Gui/display.cpp
 $(OBJECTS_DIRECTORY)/kernel.o: Kernel/kernel.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<
 	@echo '=== Kernel built ==='
+
+$(OBJECTS_DIRECTORY)/irq.o: Interrupts/irq.cpp
+	@g++ $(GPPPARAMS) -o $@ -c $<
+	@echo '=== Interrupt Manager built ==='
 
 $(OBJECTS_DIRECTORY)/gdt.o: Gdt/gdt.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<

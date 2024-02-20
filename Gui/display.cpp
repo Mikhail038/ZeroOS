@@ -165,14 +165,20 @@ void Display::set_all_fg_colour(Colour colour_)
 }
 
 
-void Display::print(uint8_t character_)
+void Display::print(int8_t character_)
 {
-    screen_buffer[cur_y][cur_x].set_char(character_);
-
     if (cur_x == width)
     {   
         cur_x = 0;
         ++cur_y;
+    }
+
+    screen_buffer[cur_y][cur_x].set_char(character_);
+
+    if (character_ == '\n')
+    {
+        ++cur_y;
+        cur_x = 0;
 
         return;
     }
@@ -180,9 +186,12 @@ void Display::print(uint8_t character_)
     ++cur_x;
 }
 
-void Display::print_line()
+void Display::print_line(const int8_t* line)
 {
-
+    for (uint8_t cnt = 0; line[cnt] != '\0'; ++cnt)
+    {
+        print(line[cnt]);
+    }
 }
 
 void Display::print_welcome_z()

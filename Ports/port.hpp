@@ -18,7 +18,7 @@ public:
 template <>
 void Port<uint8_t>::write(uint8_t data) const
 {
-    __asm__ volatile("outb %1, %0": : "a" (data), "Nd" (number));
+    __asm__ volatile("outb %0, %1": : "a" (data), "Nd" (number));
 }
 
 template <>
@@ -33,7 +33,7 @@ uint8_t Port<uint8_t>::read() const
 template <>
 void Port<uint16_t>::write(uint16_t data) const
 {
-    __asm__ volatile("outw %1, %0": : "a" (data), "Nd" (number));
+    __asm__ volatile("outw %0, %1": : "a" (data), "Nd" (number));
 }
 
 template <>
@@ -48,7 +48,7 @@ uint16_t Port<uint16_t>::read() const
 template <>
 void Port<uint32_t>::write(uint32_t data) const
 {
-    __asm__ volatile("outl %1, %0": : "a" (data), "Nd" (number));
+    __asm__ volatile("outl %0, %1": : "a" (data), "Nd" (number));
 }
 
 template <>
