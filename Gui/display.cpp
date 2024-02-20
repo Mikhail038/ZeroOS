@@ -71,7 +71,15 @@ void Line::set_char(uint8_t character_)
     }
 }
 
-void Line::set_decor_line(Cell left_cell, Cell mid_cell, Cell right_cell)
+void Line::set_line_from_one(Cell cell)
+{
+    for (uint16_t x = 0; x != width; ++x)
+    {
+        cell_buffer[x] = cell;
+    }
+}
+
+void Line::set_line_from_three(Cell left_cell, Cell mid_cell, Cell right_cell)
 {
     cell_buffer[0] = left_cell;
     for (uint16_t x = 1; x != width - 1; ++x)
@@ -81,9 +89,9 @@ void Line::set_decor_line(Cell left_cell, Cell mid_cell, Cell right_cell)
     cell_buffer[width-1] = right_cell;
 }
 
-void Line::set_monochrome_decor_line(Colour colour_, uint8_t left_char, uint8_t mid_char, uint8_t right_char)
+void Line::set_line_from_three_one_colour(uint8_t colour_, uint8_t left_char, uint8_t mid_char, uint8_t right_char)
 {
-    set_decor_line({left_char, colour_},{mid_char, colour_},{right_char, colour_});
+    set_line_from_three({left_char, colour_},{mid_char, colour_},{right_char, colour_});
 }
 
 Cell& Line::operator[](uint16_t x)
@@ -170,6 +178,11 @@ void Display::print(uint8_t character_)
     }
 
     ++cur_x;
+}
+
+void Display::print_line()
+{
+
 }
 
 void Display::print_welcome_z()

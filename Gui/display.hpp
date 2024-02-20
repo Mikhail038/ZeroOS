@@ -24,13 +24,12 @@ enum Colour
 
 class Cell
 {
-public:
 private:
     uint8_t character;    
     uint8_t colour;
 
 public:
-    Cell(uint8_t character_ = ' ', uint8_t colour_ = 0x0F);
+    Cell(uint8_t character_ = ' ', uint8_t colour_ = 0x0F); //TODO
     Cell(uint8_t character_ = ' ', Colour bg_colour_ = black, Colour fg_colour_ = white);
 
     ~Cell();
@@ -50,15 +49,16 @@ private:
     Cell cell_buffer[width];
     
 public:
-    Line();
-    ~Line();
+    Line() = default;
+    ~Line() = default;
 
     void set_bg_colour(Colour colour_);
     void set_fg_colour(Colour colour_);
     void set_char(uint8_t character_);
 
-    void set_decor_line(Cell left_cell, Cell mid_cell, Cell right_cell);
-    void set_monochrome_decor_line(Colour colour_, uint8_t left_char, uint8_t mid_char, uint8_t right_char);
+    void set_line_from_one(Cell cell);
+    void set_line_from_three(Cell left_cell, Cell mid_cell, Cell right_cell);
+    void set_line_from_three_one_colour(uint8_t colour_, uint8_t left_char, uint8_t mid_char, uint8_t right_char); 
 
     Cell& operator[](uint16_t x);
 
@@ -99,8 +99,8 @@ public:
     void print_welcome_z();
 
     void print(uint8_t character_);
+    void print_line(); //TODO
 
-    void set_line(uint16_t y, Cell cell);
 
     Line& operator[](uint16_t y);
     const Line& operator[](uint16_t y) const;
