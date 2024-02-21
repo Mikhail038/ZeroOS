@@ -11,7 +11,6 @@ Cell::Cell(uint8_t character_, Colour bg_colour_, Colour fg_colour_) : character
     set_fg_colour(fg_colour_);
 }
 
-Cell::~Cell() {};
 
 void Cell::set_bg_colour(Colour colour_)
 {
@@ -135,8 +134,6 @@ Display::Display(Cell cell) : cur_x(0), cur_y(0)
     }
 }
 
-Display::~Display(){};
-
 
 void Display::set_bg_colour(Colour colour_)
 {
@@ -173,8 +170,6 @@ void Display::print(int8_t character_)
         ++cur_y;
     }
 
-    screen_buffer[cur_y][cur_x].set_char(character_);
-
     if (character_ == '\n')
     {
         ++cur_y;
@@ -182,6 +177,8 @@ void Display::print(int8_t character_)
 
         return;
     }
+
+    screen_buffer[cur_y][cur_x].set_char(character_);
 
     ++cur_x;
 }

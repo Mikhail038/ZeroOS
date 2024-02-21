@@ -30,7 +30,7 @@ public:
     SegmentDescriptor   data_segment_selector;
 
     GlobalDescriptorTable();
-    ~GlobalDescriptorTable();
+    ~GlobalDescriptorTable() = default;
 
     uint16_t get_code_segment_selector() const;
     uint16_t get_data_segment_selector() const;   

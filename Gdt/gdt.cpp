@@ -33,10 +33,6 @@ GlobalDescriptorTable::GlobalDescriptorTable() :
     asm volatile("lgdt (%0)": :"p" (((uint8_t*) header) + 2));
 }
 
-GlobalDescriptorTable::~GlobalDescriptorTable()
-{
-
-}
 
 uint16_t GlobalDescriptorTable::get_data_segment_selector() const
 {

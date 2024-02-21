@@ -1,3 +1,7 @@
+#ifndef SLOW_PORT_HPP
+#define SLOW_PORT_HPP
+
+
 #include "types.hpp"
 
 template <typename data_size_t>
@@ -16,16 +20,28 @@ public:
 };
 
 template <>
-void PortSlow<uint8_t>::write(uint8_t data) const
+class PortSlow<uint8_t> 
 {
-    __asm__ volatile("outb %1, %0\njmp 1f\n1: jmp 1f\n1:": : "a" (data), "Nd" (number));
-}
+private:
+    uint16_t number;
 
-template <>
-uint8_t PortSlow<uint8_t>::read() const
-{
-    uint8_t result;
-    __asm__ volatile("inb %1, %0": "=a" (result) : "Nd" (number));
+public:
+    PortSlow(uint16_t number_) : number(number_) {};
 
-    return result;
-}
+    ~PortSlow() {};
+
+    void write(uint8_t data) const
+    {
+        __asm__ volatile("outb %1, %0\njmp 1f\n1: jmp 1f\n1:": : "a" (data), "Nd" (number));
+    }
+
+    uint8_t read() const
+    {
+        uint8_t result;
+        __asm__ volatile("inb %1, %0": "=a" (result) : "Nd" (number));
+
+        return result;
+    }
+};
+
+#endif

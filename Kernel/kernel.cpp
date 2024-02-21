@@ -1,6 +1,7 @@
 #include "types.hpp"
 #include "gdt.hpp"
 #include "display.hpp"
+#include "irq.hpp"
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -17,6 +18,10 @@ extern "C" void call_constructors()
 extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
 {
     GlobalDescriptorTable gdt;
+    InterruptManager interrupts(&gdt);
+
+
+    interrupts.activate();
 
     Display display({' ', black, white});
 

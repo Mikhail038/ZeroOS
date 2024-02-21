@@ -6,15 +6,14 @@ LDPARAMS = -melf_i386
 
 GPPPARAMS += -g -ggdb3
 
-DIRECTORIES = -IPorts -IExtraLibraries -IGdt -IGui -IInterrupts
+DIRECTORIES = -IPorts -IExtraLibraries -IGdt -IGui -IInterruptions
 GPPPARAMS += $(DIRECTORIES)
 
 OBJECTS_DIRECTORY = Objects
 
 OBJECTS = $(OBJECTS_DIRECTORY)/loader.o $(OBJECTS_DIRECTORY)/kernel.o 
 OBJECTS += $(OBJECTS_DIRECTORY)/gdt.o $(OBJECTS_DIRECTORY)/display.o
-OBJECTS += $(OBJECTS_DIRECTORY)/irq.o
-
+OBJECTS += $(OBJECTS_DIRECTORY)/irq.o $(OBJECTS_DIRECTORY)/irq_table.o
 TRGT = zos_kernel
 
 # =========================================================================================== 
@@ -29,13 +28,17 @@ $(OBJECTS_DIRECTORY)/kernel.o: Kernel/kernel.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<
 	@echo '=== Kernel built ==='
 
-$(OBJECTS_DIRECTORY)/irq.o: Interrupts/irq.cpp
+$(OBJECTS_DIRECTORY)/irq.o: Interruptions/irq.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<
 	@echo '=== Interrupt Manager built ==='
 
 $(OBJECTS_DIRECTORY)/gdt.o: Gdt/gdt.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<
 	@echo '=== GDT built ==='
+
+$(OBJECTS_DIRECTORY)/irq_table.o: Interruptions/irq_table.s
+	@as $(ASPARAMS) -o $@ $<
+	@echo '=== Interrupt Table ASM built ==='
 
 $(OBJECTS_DIRECTORY)/loader.o: Kernel/loader.s
 	@as $(ASPARAMS) -o $@ $<

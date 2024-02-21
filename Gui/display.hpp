@@ -32,7 +32,7 @@ public:
     Cell(uint8_t character_ = ' ', uint8_t colour_ = 0x0F); //TODO
     Cell(uint8_t character_ = ' ', Colour bg_colour_ = black, Colour fg_colour_ = white);
 
-    ~Cell();
+    ~Cell() = default;
 
     void set_bg_colour(Colour colour);
     void set_fg_colour(Colour colour);
@@ -88,7 +88,7 @@ public:
     Display(Colour bg_colour_ = black, Colour fg_colour_ = white, uint8_t character_ = ' ');
     Display(Cell cell = {' ', black, white});
 
-    ~Display();
+    ~Display() = default;
 
     void set_bg_colour(Colour colour_);
     void set_fg_colour(Colour colour_);
