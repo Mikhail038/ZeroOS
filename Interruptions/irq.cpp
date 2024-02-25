@@ -121,13 +121,13 @@ uint32_t InterruptManager::do_handle_irq(uint8_t irq_number, uint32_t esp)
         char* foo = "UNHANDLED INTERRUPT 0x00";
         char* hex = "0123456789ABCDEF";
 
-        foo[22] = hex[(irq_number >> 4) & 0xF];
-        foo[23] = hex[irq_number & 0xF];
+        foo[22] = hex[(irq_number >> 4) & 0x0F];
+        foo[23] = hex[irq_number & 0x0F];
 
         putline(foo);
     }
 
-    if ((irq_number >= hardware_offset) && (irq_number < hardware_offset + 0x10))
+    if ((irq_number >= hardware_offset) && (irq_number < (hardware_offset + 0x10)))
     {
         pic_master_command.write(0x20);
 
@@ -140,13 +140,12 @@ uint32_t InterruptManager::do_handle_irq(uint8_t irq_number, uint32_t esp)
     return esp;
 }
 
-
-
 InterruptHandler::InterruptHandler(uint8_t irq_number_, InterruptManager* interrupt_manager_) :
     irq_number(irq_number_),
     interrupt_manager(interrupt_manager_)
 {
     interrupt_manager->handlers[irq_number] = this;
+    // putline("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 }
 
 InterruptHandler::~InterruptHandler()

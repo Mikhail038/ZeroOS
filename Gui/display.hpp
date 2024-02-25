@@ -99,6 +99,9 @@ public:
 
     void set_all_bg_colour(Colour colour_);
     void set_all_fg_colour(Colour colour_);
+    void set_all_char(uint8_t character_);
+
+    void set_start_cursor();
 
     void print_welcome_z();
 

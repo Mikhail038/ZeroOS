@@ -12,14 +12,20 @@ class KeyboardDriver : public InterruptHandler
 {
     const uint16_t keyboard_irq = 0x21;
 
+    Display& display;
+
     Port<uint8_t> data_port;
     Port<uint8_t> command_port;
 
 public:
-    KeyboardDriver(InterruptManager* manager);
+    KeyboardDriver(InterruptManager* manager, Display& display_);
     ~KeyboardDriver();
 
     virtual uint32_t handle_interrupt(uint32_t esp);
+
+private:
+    void hex_print_key(uint8_t key);
+    void leha_loh_print_key(uint8_t key);
 };
 
-#endif
+#endif                                                                                                                                                      

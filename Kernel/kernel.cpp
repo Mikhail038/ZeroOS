@@ -19,27 +19,27 @@ extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
 {
     Display display({' ', black, white});
 
-    display.print_welcome_z();
+    // display.print_welcome_z();
 
-    display.set_all_fg_colour(black);
+    // display.set_all_fg_colour(black);
 
-    display.print('L');
-    display.print('E');
-    display.print('H');
-    display.print('A');
-    display.print(' ');
-    display.print('L');
-    display.print('O');
-    display.print('H');
-    display.print('!');
-    display.print('\n');
-    display.print_line("qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm\n");
-    display.print('Z');
+    // display.print('L');
+    // display.print('E');
+    // display.print('H');
+    // display.print('A');
+    // display.print(' ');
+    // display.print('L');
+    // display.print('O');
+    // display.print('H');
+    // display.print('!');
+    // display.print('\n');
+    // display.print_line("qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm\n");
+    // display.print('Z');
 
     GlobalDescriptorTable gdt;
     InterruptManager interrupts(&gdt);
 
-    KeyboardDriver keyboard(&interrupts);
+    KeyboardDriver keyboard(&interrupts, display);
 
     interrupts.activate();
 

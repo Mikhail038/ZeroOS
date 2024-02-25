@@ -160,7 +160,20 @@ void Display::set_all_fg_colour(Colour colour_)
         screen_buffer[y].set_fg_colour(colour_);
     }
 }
+    
+void Display::set_all_char(uint8_t character_)
+{
+    for (uint16_t y = 0; y != height; ++y)
+    {
+        screen_buffer[y].set_char(character_);
+    }
+}
 
+void Display::set_start_cursor()
+{
+    cur_x = 0;
+    cur_y = 0;
+}
 
 void Display::print(int8_t character_)
 {

@@ -3,6 +3,7 @@
 
 
 #include "types.hpp"
+
 void putline(char* line);
 
 template <typename data_size_t>
