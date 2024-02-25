@@ -1,3 +1,7 @@
+#ifndef DISPLAY_HPP
+#define DISPLAY_HPP
+
+
 #include "types.hpp"
 
 static const uint16_t width = 80; 
@@ -105,3 +109,4 @@ public:
     const Line& operator[](uint16_t y) const;
 };
 
+#endif

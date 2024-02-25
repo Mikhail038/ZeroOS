@@ -2,6 +2,7 @@
 #include "gdt.hpp"
 #include "display.hpp"
 #include "irq.hpp"
+#include "keyboard.hpp"
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -16,8 +17,6 @@ extern "C" void call_constructors()
 
 extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
 {
-    GlobalDescriptorTable gdt;
-
     Display display({' ', black, white});
 
     display.print_welcome_z();
@@ -37,10 +36,13 @@ extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
     display.print_line("qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm\n");
     display.print('Z');
 
+    GlobalDescriptorTable gdt;
     InterruptManager interrupts(&gdt);
 
+    KeyboardDriver keyboard(&interrupts);
+
     interrupts.activate();
-    
+
     while (true);
 }
 

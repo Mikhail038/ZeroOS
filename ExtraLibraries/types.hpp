@@ -1,6 +1,8 @@
 #ifndef TYPES_HPP
 #define TYPES_HPP
 
+#define BYTE 256
+
 #define Kb 1024
 #define Mb 1024 * Kb
 

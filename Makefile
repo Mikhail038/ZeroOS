@@ -6,7 +6,7 @@ LDPARAMS = -melf_i386
 
 GPPPARAMS += -g -ggdb3
 
-DIRECTORIES = -IPorts -IExtraLibraries -IGdt -IGui -IInterruptions
+DIRECTORIES = -IPorts -IExtraLibraries -IGdt -IGui -IInterruptions -IDrivers
 GPPPARAMS += $(DIRECTORIES)
 
 OBJECTS_DIRECTORY = Objects
@@ -14,11 +14,17 @@ OBJECTS_DIRECTORY = Objects
 OBJECTS = $(OBJECTS_DIRECTORY)/loader.o $(OBJECTS_DIRECTORY)/kernel.o 
 OBJECTS += $(OBJECTS_DIRECTORY)/gdt.o $(OBJECTS_DIRECTORY)/display.o
 OBJECTS += $(OBJECTS_DIRECTORY)/irq.o $(OBJECTS_DIRECTORY)/irq_table.o
+OBJECTS += $(OBJECTS_DIRECTORY)/keyboard.o
+
 TRGT = zos_kernel
 
 # =========================================================================================== 
 
 all: MAKE_OBJ_DIR $(TRGT).bin
+
+$(OBJECTS_DIRECTORY)/keyboard.o: Drivers/keyboard.cpp
+	@g++ $(GPPPARAMS) -o $@ -c $<
+	@echo '=== Keyboard Driver built ==='
 
 $(OBJECTS_DIRECTORY)/display.o: Gui/display.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<

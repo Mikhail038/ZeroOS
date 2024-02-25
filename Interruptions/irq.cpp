@@ -13,6 +13,8 @@ void putline(char* line)
 
 InterruptManager::GateDescriptor InterruptManager::interrupt_descriptor_table[256];
 
+InterruptManager* InterruptManager::active_interrupt_manager = 0;
+
 
 void InterruptManager::set_interrupt_descriptor_table_entry(
     uint8_t interrupt_number,
@@ -39,20 +41,19 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) :
     pic_slave_command(0xA0),
     pic_slave_data(0xA1)
 {
-    const uint16_t IRQ_BASE = 0x20;
-
     uint16_t code_segment = gdt->get_code_segment_selector();
     
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
 
     for (uint16_t cnt = 0; cnt != 256; ++cnt)
     {
+        handlers[cnt] = 0;
         set_interrupt_descriptor_table_entry(cnt, code_segment, &asm_ignore_irq_, 0, IDT_INTERRUPT_GATE);
     }
 
-    set_interrupt_descriptor_table_entry(IRQ_BASE + 0x00, 
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x00, 
                       code_segment, &asm_handle_irq_0x00, 0, IDT_INTERRUPT_GATE);
-    set_interrupt_descriptor_table_entry(IRQ_BASE + 0x01, 
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x01, 
                       code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
 
     pic_master_command.write(0x11);
@@ -80,20 +81,83 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) :
 
 void InterruptManager::activate()
 {
+    if (active_interrupt_manager != 0)
+    {
+        active_interrupt_manager->deactivate();
+    }
+    active_interrupt_manager = this;
+
     // {
         asm("sti");
     // }
 }
 
+void InterruptManager::deactivate()
+{
+    if (active_interrupt_manager == this)
+    {
+        active_interrupt_manager = 0;
+        asm("cli");
+    }
+}
+
 uint32_t InterruptManager::handle_irq(uint8_t irq_number, uint32_t esp) 
 {
-    char* foo = "INTERRUPT 0x00";
-    char* hex = "0123456789ABCDEF";
-
-    foo[12] = hex[(irq_number >> 4) & 0xF];
-    foo[13] = hex[irq_number & 0xF];
-
-    putline(foo);
-
+    if (active_interrupt_manager != 0)
+    {
+       return active_interrupt_manager->do_handle_irq(irq_number, esp);
+    }
     return esp;
 };
+
+uint32_t InterruptManager::do_handle_irq(uint8_t irq_number, uint32_t esp) 
+{
+    if (handlers[irq_number] != 0)
+    {
+        esp = handlers[irq_number]->handle_interrupt(esp);
+    }
+    else if (irq_number != hardware_offset + 0x00)
+    {
+        char* foo = "UNHANDLED INTERRUPT 0x00";
+        char* hex = "0123456789ABCDEF";
+
+        foo[22] = hex[(irq_number >> 4) & 0xF];
+        foo[23] = hex[irq_number & 0xF];
+
+        putline(foo);
+    }
+
+    if ((irq_number >= hardware_offset) && (irq_number < hardware_offset + 0x10))
+    {
+        pic_master_command.write(0x20);
+
+        if (irq_number >= hardware_offset + 0x08)
+        {
+            pic_slave_command.write(0x20);
+        }
+    }
+
+    return esp;
+}
+
+
+
+InterruptHandler::InterruptHandler(uint8_t irq_number_, InterruptManager* interrupt_manager_) :
+    irq_number(irq_number_),
+    interrupt_manager(interrupt_manager_)
+{
+    interrupt_manager->handlers[irq_number] = this;
+}
+
+InterruptHandler::~InterruptHandler()
+{
+    if (interrupt_manager->handlers[irq_number] == this)
+    {
+        interrupt_manager->handlers[irq_number] = 0;
+    }
+}
+
+uint32_t InterruptHandler::handle_interrupt(uint32_t esp)
+{
+    return esp;
+}
