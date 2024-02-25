@@ -27,8 +27,11 @@ GlobalDescriptorTable::GlobalDescriptorTable() :
 {
     uint32_t header[2];
 
-    header[0] = (uint32_t) this;
-    header[1] = sizeof(GlobalDescriptorTable) << 10;
+    // header[0] = (uint32_t) this;
+    // header[1] = sizeof(GlobalDescriptorTable) << 10;
+
+    header[1] = (uint32_t) this;
+    header[0] = sizeof(GlobalDescriptorTable) << 16;
 
     asm volatile("lgdt (%0)": :"p" (((uint8_t*) header) + 2));
 }

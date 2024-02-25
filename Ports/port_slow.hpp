@@ -3,6 +3,7 @@
 
 
 #include "types.hpp"
+void putline(char* line);
 
 template <typename data_size_t>
 class PortSlow 
@@ -32,7 +33,7 @@ public:
 
     void write(uint8_t data) const
     {
-        __asm__ volatile("outb %1, %0\njmp 1f\n1: jmp 1f\n1:": : "a" (data), "Nd" (number));
+        __asm__ volatile("outb %0, %1\njmp 1f\n1: jmp 1f\n1:": : "a" (data), "Nd" (number));
     }
 
     uint8_t read() const

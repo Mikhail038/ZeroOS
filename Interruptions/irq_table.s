@@ -5,28 +5,27 @@
 
 .extern  _ZN16InterruptManager10handle_irqEhj
 
-.global _ZN16InterruptManager15asm_ignore_irq_Ev
-
-.macro asm_handle_irq number
-.global _ZN16InterruptManager19asm_handle_irq_\number\()Ev
-_ZN16InterruptManager19asm_handle_irq_\number\()Ev:
+.macro Handle_exc number
+.global _ZN16InterruptManager19asm_handle_exc_\number\()Ev
+_ZN16InterruptManager19asm_handle_exc_\number\()Ev:
     movb $\number, (irq_number)
     jmp irq_bottom
 .endm
 
-.macro asm_handle_exception number
-.global _ZN16InterruptManager26asm_handle_exception\number\()Ev
-_ZN16InterruptManager26asm_handle_exception\number\()Ev:
+.macro Handle_irq number
+.global _ZN16InterruptManager19asm_handle_irq_\number\()Ev
+_ZN16InterruptManager19asm_handle_irq_\number\()Ev:
     movb $\number + IRQ_BASE, (irq_number)
     jmp irq_bottom
 .endm
 
+Handle_exc 0x00
+Handle_exc 0x01
 
-asm_handle_irq 0x00
-asm_handle_irq 0x01
+Handle_irq 0x00
+Handle_irq 0x01
 
 irq_bottom:
-
     pusha
     pushl %ds
     pushl %es
@@ -36,13 +35,17 @@ irq_bottom:
     pushl %esp
     push (irq_number)
     call _ZN16InterruptManager10handle_irqEhj
-    movl %eax, %esp
+    add %esp, 6
+    mov %eax, %esp
 
-    popl %gs
-    popl %fs
-    popl %es
-    popl %ds
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
     popa
+
+
+.global _ZN16InterruptManager15asm_ignore_irq_Ev
 
 _ZN16InterruptManager15asm_ignore_irq_Ev:
 

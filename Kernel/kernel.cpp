@@ -14,14 +14,9 @@ extern "C" void call_constructors()
     }
 }
 
-
 extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
 {
     GlobalDescriptorTable gdt;
-    InterruptManager interrupts(&gdt);
-
-
-    interrupts.activate();
 
     Display display({' ', black, white});
 
@@ -42,6 +37,10 @@ extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
     display.print_line("qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm\n");
     display.print('Z');
 
+    InterruptManager interrupts(&gdt);
+
+    interrupts.activate();
+    
     while (true);
 }
 
