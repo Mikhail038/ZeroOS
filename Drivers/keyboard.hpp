@@ -14,6 +14,8 @@ class KeyboardDriver : public InterruptHandler
 
     Display& display;
 
+    bool shift_pressed;
+
     Port<uint8_t> data_port;
     Port<uint8_t> command_port;
 

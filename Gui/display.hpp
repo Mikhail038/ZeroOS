@@ -108,6 +108,10 @@ public:
     void print(int8_t character_);
     void print_line(const int8_t* line);
 
+    void backspace();
+
+    void go_back_untill_char();
+
     Line& operator[](uint16_t y);
     const Line& operator[](uint16_t y) const;
 };

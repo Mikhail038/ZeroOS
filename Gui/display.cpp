@@ -204,6 +204,47 @@ void Display::print_line(const int8_t* line)
     }
 }
 
+void Display::backspace()
+{
+    go_back_untill_char();
+
+    if (cur_x == 0)
+    {
+        if (screen_buffer[cur_y][cur_x].get_char() != ' ')
+        {
+            print(' ');
+            --cur_x;
+
+            return;
+        }
+
+        if (cur_y > 0)
+        {
+            --cur_y;
+            cur_x = width - 1;
+            go_back_untill_char();
+
+            return;
+        }
+    }
+
+    print(' ');
+
+    if (cur_x > 0)
+    {
+        --cur_x;
+    }
+}
+
+void Display::go_back_untill_char()
+{
+    while ((cur_x != 0) && (screen_buffer[cur_y][cur_x].get_char() == ' '))
+    {
+        --cur_x;
+    }
+}
+
+
 void Display::print_welcome_z()
 {
     for (uint16_t y = 0; y != 8; ++y)

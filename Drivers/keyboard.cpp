@@ -4,7 +4,8 @@ KeyboardDriver::KeyboardDriver(InterruptManager* interrupt_manager_, Display& di
     InterruptHandler(0x21, interrupt_manager_),
     display(display_),
     data_port(0x60),
-    command_port(0x64)
+    command_port(0x64),
+    shift_pressed(false)
 {
     while (command_port.read() & 0x1)
     {
@@ -29,55 +30,113 @@ KeyboardDriver::~KeyboardDriver()
 
 uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
 {
+    uint8_t key = data_port.read();
+
     const uint8_t FIRST_KEY_RELEASE = 0x80;
 
-    uint8_t key = data_port.read();
+    const int8_t* scan_codes_02_0D         = "1234567890-=";
+    const int8_t* shift_scan_codes_02_0D   = "!@#$%^&*()_+";
+
+    const int8_t* scan_codes_10_1B         = "qwertyuiop[]";
+    const int8_t* shift_scan_codes_10_1B   = "QWERTYUIOP{}";
+
+    const int8_t* scan_codes_1E_28         = "asdfghjkl;'";
+    const int8_t* shift_scan_codes_1E_28   = "ASDFGHJKL:\"";
+
+    const int8_t* scan_codes_2C_35         = "zxcvbnm,./";
+    const int8_t* shift_scan_codes_2C_35   = "ZXCVBNM<>?";
 
     if (key < FIRST_KEY_RELEASE)
     {
+        if ((key >= 0x02) && (key <= 0x0D))
+        {
+            if (shift_pressed)
+            {
+                display.print(shift_scan_codes_02_0D[key-0x02]);
+                return esp;
+            }
+            
+            display.print(scan_codes_02_0D[key-0x02]);
+            return esp;
+        }
+
+        if ((key >= 0x10) && (key <= 0x1B))
+        {
+            if (shift_pressed)
+            {
+                display.print(shift_scan_codes_10_1B[key-0x10]);
+                return esp;
+            }
+            
+            display.print(scan_codes_10_1B[key-0x10]);
+            return esp;
+        }
+
+        if ((key >= 0x1E) && (key <= 0x28))
+        {
+            if (shift_pressed)
+            {
+                display.print(shift_scan_codes_1E_28[key-0x1E]);
+                return esp;
+            }
+            
+            display.print(scan_codes_1E_28[key-0x1E]);
+            return esp;
+        }
+
+        if ((key >= 0x2C) && (key <= 0x35))
+        {
+            if (shift_pressed)
+            {
+                display.print(shift_scan_codes_2C_35[key-0x2C]);
+                return esp;
+            }
+            
+            display.print(scan_codes_2C_35[key-0x2C]);
+            return esp;
+        }
+
         switch (key)
         {
+                
             case 0xFA:
                 break;
 
-            case 0x1E:
-                display.print('a');
+            case 0x0E:
+                display.backspace();
                 break;
 
-            case 0x26:
-                display.print('l');
-                break;
-
-            case 0x12:
-                display.print('e');
-                break;
-
-            case 0x23:
-                display.print('h');
-                break;
-
-            case 0x39:
-                display.print(' ');
-                break;
-
-            case 0x18:
-                display.print('o');
-                break;
-
-            case 0x1C:
+            case 0x1C: //Enter
                 display.print('\n');
                 break;
 
-            case 0x4F:
+            case 0x2A: //Shift
+                shift_pressed = (shift_pressed) ? false : true;
+                break;
+
+            case 0x3A: //CapsLock
+                shift_pressed = (shift_pressed) ? false : true;
+                break;
+
+            case 0x39: //Space
+                display.print(' ');
+                break;
+
+            case 0x4F: //End
                 display.set_all_char(' ');
                 display.set_start_cursor();
                 break;
                 
             default:
-                leha_loh_print_key(key);
-                // hex_print_key(key);
+                // leha_loh_print_key(key);
+                hex_print_key(key);
                 // display.print(key); 
         }
+    }
+
+    if (key == 0xAA) //Shift depressed
+    {
+        shift_pressed = (shift_pressed) ? false : true;
     }
 
     return esp;
