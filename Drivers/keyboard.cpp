@@ -23,11 +23,6 @@ KeyboardDriver::KeyboardDriver(InterruptManager* interrupt_manager_, Display& di
     data_port.write(0xF4);
 }
 
-KeyboardDriver::~KeyboardDriver()
-{
-
-}
-
 uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
 {
     uint8_t key = data_port.read();
@@ -111,15 +106,18 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
                 break;
 
             case 0x2A: //Shift
-                shift_pressed = (shift_pressed) ? false : true;
+                shift_pressed = true; // there is a bug that can be solved by implementating two separate markers of CAPS and shift-press
                 break;
 
             case 0x3A: //CapsLock
-                shift_pressed = (shift_pressed) ? false : true;
+                shift_pressed = (shift_pressed) ? false : true; // there is a bug that can be solved by implementating two separate markers of CAPS and shift-press
                 break;
 
             case 0x39: //Space
                 display.print(' ');
+                break;
+
+            case 0x45: //Numlock? (accures witout pressing any particular button)
                 break;
 
             case 0x4F: //End
@@ -136,7 +134,7 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
 
     if (key == 0xAA) //Shift depressed
     {
-        shift_pressed = (shift_pressed) ? false : true;
+        shift_pressed = false; // there is a bug that can be solved by implementating two separate markers of CAPS and shift-press
     }
 
     return esp;

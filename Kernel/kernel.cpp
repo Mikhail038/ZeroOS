@@ -3,6 +3,7 @@
 #include "display.hpp"
 #include "irq.hpp"
 #include "keyboard.hpp"
+#include "mouse.hpp"
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -40,6 +41,7 @@ extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
     InterruptManager interrupts(&gdt);
 
     KeyboardDriver keyboard(&interrupts, display);
+    MouseDriver mouse(&interrupts, display);
 
     interrupts.activate();
 

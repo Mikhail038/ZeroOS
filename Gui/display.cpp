@@ -106,7 +106,11 @@ const Cell& Line::operator[](uint16_t x) const
 //----------------------------------------------------------------------------------------------------------------------------------
 
 Display::Display(Colour bg_colour_, Colour fg_colour_, uint8_t character_) : 
-    bg_colour(bg_colour_), fg_colour(fg_colour_), character(character_), cur_x(0), cur_y(0)
+    bg_colour(bg_colour_), 
+    fg_colour(fg_colour_),
+    character(character_), 
+    cur_x(0), cur_y(0), 
+    mouse_x(width / 2), mouse_y(height / 2)
 {
     screen_buffer = (Line*) video_ram_address;
 
@@ -118,7 +122,9 @@ Display::Display(Colour bg_colour_, Colour fg_colour_, uint8_t character_) :
     }
 };
 
-Display::Display(Cell cell) : cur_x(0), cur_y(0)
+Display::Display(Cell cell) : 
+cur_x(0), cur_y(0),
+mouse_x(width / 2), mouse_y(height / 2)
 {
     bg_colour = (Colour) cell.get_bg_colour();
     fg_colour = (Colour) cell.get_fg_colour();

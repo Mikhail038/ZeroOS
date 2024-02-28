@@ -10,8 +10,6 @@
 
 class KeyboardDriver : public InterruptHandler
 {
-    const uint16_t keyboard_irq = 0x21;
-
     Display& display;
 
     bool shift_pressed;
@@ -21,7 +19,7 @@ class KeyboardDriver : public InterruptHandler
 
 public:
     KeyboardDriver(InterruptManager* manager, Display& display_);
-    ~KeyboardDriver();
+    ~KeyboardDriver() = default;
 
     virtual uint32_t handle_interrupt(uint32_t esp);
 

@@ -55,6 +55,8 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) :
                       code_segment, &asm_handle_irq_0x00, 0, IDT_INTERRUPT_GATE);
     set_interrupt_descriptor_table_entry(hardware_offset + 0x01, 
                       code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x0C, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
 
     pic_master_command.write(0x11);
     pic_slave_command.write(0x11);
@@ -145,7 +147,6 @@ InterruptHandler::InterruptHandler(uint8_t irq_number_, InterruptManager* interr
     interrupt_manager(interrupt_manager_)
 {
     interrupt_manager->handlers[irq_number] = this;
-    // putline("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 }
 
 InterruptHandler::~InterruptHandler()

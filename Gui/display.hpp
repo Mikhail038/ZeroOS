@@ -75,16 +75,19 @@ class Display
 public:
     uint16_t** video_ram_address = (uint16_t**) 0xB8000;
 
-    static const uint16_t width    = 80;
-    static const uint16_t height   = 25;
+    static const uint8_t width    = 80;
+    static const uint8_t height   = 25;
     
     Colour bg_colour;
     Colour fg_colour;
 
     uint8_t character;
 
-    uint16_t cur_x;
-    uint16_t cur_y;
+    uint8_t cur_x;
+    uint8_t cur_y;
+
+    int8_t mouse_x;
+    int8_t mouse_y;
 
     Line* screen_buffer;
 
