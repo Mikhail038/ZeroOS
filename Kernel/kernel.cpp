@@ -41,7 +41,10 @@ extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
     InterruptManager interrupts(&gdt);
 
     KeyboardDriver keyboard(&interrupts, display);
-    MouseDriver mouse(&interrupts, display);
+
+    display.move_currsor(0,0);
+    
+    //MouseDriver mouse(&interrupts, display);
 
     interrupts.activate();
 

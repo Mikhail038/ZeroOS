@@ -5,7 +5,8 @@ KeyboardDriver::KeyboardDriver(InterruptManager* interrupt_manager_, Display& di
     display(display_),
     data_port(0x60),
     command_port(0x64),
-    shift_pressed(false)
+    shift_pressed(false),
+    ctrl_pressed(false)
 {
     while (command_port.read() & 0x1)
     {
@@ -41,6 +42,7 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
     const int8_t* scan_codes_2C_35         = "zxcvbnm,./";
     const int8_t* shift_scan_codes_2C_35   = "ZXCVBNM<>?";
 
+    //hex_print_key(key);
     if (key < FIRST_KEY_RELEASE)
     {
         if ((key >= 0x02) && (key <= 0x0D))
@@ -97,8 +99,15 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
             case 0xFA:
                 break;
 
-            case 0x0E:
-                display.backspace();
+            case 0x0E: // backspace
+                if(ctrl_pressed)
+                {
+                    display.ctrl_backspace();
+                }
+                else
+                {
+                    display.backspace();
+                }
                 break;
 
             case 0x1C: //Enter
@@ -106,18 +115,53 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
                 break;
 
             case 0x2A: //Shift
-                shift_pressed = true; // there is a bug that can be solved by implementating two separate markers of CAPS and shift-press
+                shift_pressed = true;
+                break;
+
+            case 0x1D: //Ctrl
+                ctrl_pressed = true;
                 break;
 
             case 0x3A: //CapsLock
-                shift_pressed = (shift_pressed) ? false : true; // there is a bug that can be solved by implementating two separate markers of CAPS and shift-press
+                shift_pressed = (shift_pressed) ? false : true;
                 break;
 
             case 0x39: //Space
                 display.print(' ');
                 break;
 
-            case 0x45: //Numlock? (accures witout pressing any particular button)
+            case 0x52: // Insert
+                display.set_all_fg_colour(red); // RED MODE
+                break;
+            
+            case 0x45: // num lock
+                //num_func();
+                break;
+
+            case 0x4B: // left
+                if((display.cur_x == 0) && (display.cur_y != 0))
+                {
+                    display.move_currsor(display.cur_y - 1, display.width - 1);
+                    break;
+                }
+                display.move_currsor(display.cur_y, display.cur_x - 1);
+                break;
+
+            case 0x48: // up
+                display.move_currsor(display.cur_y - 1, display.cur_x);
+                break;
+
+            case 0x4D: // right
+                if((display.cur_x == display.width - 1) && (display.cur_y != display.height - 1))
+                {
+                    display.move_currsor(display.cur_y + 1, 0);
+                    break;
+                }
+                display.move_currsor(display.cur_y, display.cur_x + 1);
+                break;
+
+            case 0x50: // down
+                display.move_currsor(display.cur_y + 1, display.cur_x);
                 break;
 
             case 0x4F: //End
@@ -134,7 +178,11 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
 
     if (key == 0xAA) //Shift depressed
     {
-        shift_pressed = false; // there is a bug that can be solved by implementating two separate markers of CAPS and shift-press
+        shift_pressed = (shift_pressed) ? false : true;
+    }
+    if (key == 0x9D) //Ctrl depressed
+    {
+        ctrl_pressed = false;
     }
 
     return esp;
@@ -154,4 +202,5 @@ void KeyboardDriver::hex_print_key(uint8_t key)
 void KeyboardDriver::leha_loh_print_key(uint8_t key)
 {
     display.print_line("LEHA LOH ");
+
 }

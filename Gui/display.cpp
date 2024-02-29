@@ -177,29 +177,34 @@ void Display::set_all_char(uint8_t character_)
 
 void Display::set_start_cursor()
 {
-    cur_x = 0;
-    cur_y = 0;
+    //cur_x = 0;
+    //cur_y = 0;
+
+    move_currsor(0, 0);
 }
 
 void Display::print(int8_t character_)
 {
-    if (cur_x == width)
+
+    if (cur_x == width - 1)
     {   
-        cur_x = 0;
-        ++cur_y;
+        screen_buffer[cur_y][cur_x].set_char(character_);
+
+        move_currsor(cur_y + 1, 0);
+
+        return;
     }
 
     if (character_ == '\n')
     {
-        ++cur_y;
-        cur_x = 0;
+        move_currsor(cur_y + 1, 0);
 
         return;
     }
 
     screen_buffer[cur_y][cur_x].set_char(character_);
 
-    ++cur_x;
+    incr_currsor_x();
 }
 
 void Display::print_line(const int8_t* line)
@@ -212,44 +217,111 @@ void Display::print_line(const int8_t* line)
 
 void Display::backspace()
 {
-    go_back_untill_char();
-
     if (cur_x == 0)
     {
-        if (screen_buffer[cur_y][cur_x].get_char() != ' ')
+        if (cur_y == 0)
         {
             print(' ');
-            --cur_x;
+
+            set_start_cursor();
 
             return;
         }
 
         if (cur_y > 0)
         {
-            --cur_y;
-            cur_x = width - 1;
+            print(' ');
+
+            move_currsor(cur_y - 1, width - 1);
+
             go_back_untill_char();
 
             return;
         }
     }
 
-    print(' ');
+    if(screen_buffer[cur_y][cur_x].get_char() == ' ')
+    {
+        go_back_untill_char();
+        incr_currsor_x();
+    }
+
+    screen_buffer[cur_y][cur_x].set_char(' ');
 
     if (cur_x > 0)
     {
-        --cur_x;
+        decr_currsor_x();
     }
+    else
+    {
+        move_currsor(cur_y - 1, width - 1);
+    }
+}
+
+void Display::ctrl_backspace()
+{
+    go_back_untill_char();
+
+    while(screen_buffer[cur_y][cur_x].get_char() != ' ')
+    {
+        screen_buffer[cur_y][cur_x].set_char(' ');
+
+        decr_currsor_x();
+    }
+
+    screen_buffer[cur_y][cur_x].set_char(' ');
 }
 
 void Display::go_back_untill_char()
 {
     while ((cur_x != 0) && (screen_buffer[cur_y][cur_x].get_char() == ' '))
     {
-        --cur_x;
+        decr_currsor_x();
+    }
+
+
+}
+
+void Display::move_currsor(int8_t new_y, int8_t new_x)
+{
+    if(new_x > width - 1)
+    {
+        cur_x = width - 1;
+    }
+    else if(new_x < 0)
+    {
+        cur_x = 0;
+    }
+    else if(new_y > height - 1)
+    {
+        cur_y = height - 1;
+    }
+    else if(new_y < 0)
+    {
+        cur_y = 0;
+    }
+    else
+    {
+        screen_buffer[cur_y][cur_x].set_bg_colour(black);
+        screen_buffer[cur_y][cur_x].set_fg_colour(white);
+
+        cur_x = new_x;
+        cur_y = new_y;
+
+        screen_buffer[cur_y][cur_x].set_bg_colour(white);
+        screen_buffer[cur_y][cur_x].set_fg_colour(black);
     }
 }
 
+void Display::decr_currsor_x()
+{
+    move_currsor(cur_y, cur_x - 1);
+}
+
+void Display::incr_currsor_x()
+{
+    move_currsor(cur_y, cur_x + 1);
+}
 
 void Display::print_welcome_z()
 {

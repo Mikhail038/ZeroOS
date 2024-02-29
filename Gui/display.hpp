@@ -112,8 +112,13 @@ public:
     void print_line(const int8_t* line);
 
     void backspace();
+    void ctrl_backspace();
 
     void go_back_untill_char();
+
+    void move_currsor(int8_t new_y, int8_t new_x);
+    void decr_currsor_x();
+    void incr_currsor_x();
 
     Line& operator[](uint16_t y);
     const Line& operator[](uint16_t y) const;
