@@ -116,9 +116,11 @@ public:
 
     void go_back_untill_char();
 
-    void move_currsor(int8_t new_y, int8_t new_x);
+    void move_currsor(int8_t new_cur_y, int8_t new_cur_x);
     void decr_currsor_x();
     void incr_currsor_x();
+
+    void move_mouse(int8_t new_mouse_y, int8_t new_mouse_x);
 
     Line& operator[](uint16_t y);
     const Line& operator[](uint16_t y) const;

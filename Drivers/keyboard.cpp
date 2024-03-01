@@ -144,7 +144,7 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
                     display.move_currsor(display.cur_y - 1, display.width - 1);
                     break;
                 }
-                display.move_currsor(display.cur_y, display.cur_x - 1);
+                display.decr_currsor_x();
                 break;
 
             case 0x48: // up
@@ -157,7 +157,7 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
                     display.move_currsor(display.cur_y + 1, 0);
                     break;
                 }
-                display.move_currsor(display.cur_y, display.cur_x + 1);
+                display.incr_currsor_x();
                 break;
 
             case 0x50: // down
@@ -168,6 +168,18 @@ uint32_t KeyboardDriver::handle_interrupt(uint32_t esp)
                 display.set_all_char(' ');
                 display.set_start_cursor();
                 break;
+
+            // case 0x47:
+            //     display.move_mouse(display.mouse_y, display.mouse_x - 1);
+            //     break;
+
+            // case 0x49:
+            //     display.move_mouse(display.mouse_y, display.mouse_x + 1);
+            //     break;
+
+            // case 0x4c:
+            //     display.move_currsor(display.mouse_y, display.mouse_x);
+            //     break;
                 
             default:
                 // leha_loh_print_key(key);

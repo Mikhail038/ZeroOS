@@ -109,8 +109,7 @@ Display::Display(Colour bg_colour_, Colour fg_colour_, uint8_t character_) :
     bg_colour(bg_colour_), 
     fg_colour(fg_colour_),
     character(character_), 
-    cur_x(0), cur_y(0), 
-    mouse_x(width / 2), mouse_y(height / 2)
+    cur_x(0), cur_y(0)
 {
     screen_buffer = (Line*) video_ram_address;
 
@@ -123,8 +122,7 @@ Display::Display(Colour bg_colour_, Colour fg_colour_, uint8_t character_) :
 };
 
 Display::Display(Cell cell) : 
-cur_x(0), cur_y(0),
-mouse_x(width / 2), mouse_y(height / 2)
+cur_x(0), cur_y(0)
 {
     bg_colour = (Colour) cell.get_bg_colour();
     fg_colour = (Colour) cell.get_fg_colour();
@@ -282,34 +280,53 @@ void Display::go_back_untill_char()
 
 }
 
-void Display::move_currsor(int8_t new_y, int8_t new_x)
+void Display::move_currsor(int8_t new_cur_y, int8_t new_cur_x)
 {
-    if(new_x > width - 1)
+    if((new_cur_y == cur_y) && (new_cur_x == cur_x)) // no movement
+    {
+        return;
+    }
+
+    if(new_cur_x > width - 1)
     {
         cur_x = width - 1;
     }
-    else if(new_x < 0)
+    else if(new_cur_x < 0)
     {
         cur_x = 0;
     }
-    else if(new_y > height - 1)
+    else if(new_cur_y > height - 1)
     {
         cur_y = height - 1;
     }
-    else if(new_y < 0)
+    else if(new_cur_y < 0)
     {
         cur_y = 0;
     }
     else
     {
-        screen_buffer[cur_y][cur_x].set_bg_colour(black);
-        screen_buffer[cur_y][cur_x].set_fg_colour(white);
+        if((cur_x == mouse_x) && (cur_y == mouse_y))
+        {
+            screen_buffer[cur_y][cur_x].set_bg_colour(red);
+            screen_buffer[cur_y][cur_x].set_fg_colour(white);
+        }
+        else
+        {
+            screen_buffer[cur_y][cur_x].set_bg_colour(black);
+            screen_buffer[cur_y][cur_x].set_fg_colour(white);
+        }
 
-        cur_x = new_x;
-        cur_y = new_y;
+        cur_x = new_cur_x;
+        cur_y = new_cur_y;
 
         screen_buffer[cur_y][cur_x].set_bg_colour(white);
         screen_buffer[cur_y][cur_x].set_fg_colour(black);
+    }
+
+    if((cur_y == mouse_y) && (cur_x == mouse_x)) // move currsor to mouse
+    {
+        screen_buffer[mouse_y][mouse_x].set_bg_colour(red);
+        screen_buffer[mouse_y][mouse_x].set_fg_colour(white);
     }
 }
 
@@ -321,6 +338,48 @@ void Display::decr_currsor_x()
 void Display::incr_currsor_x()
 {
     move_currsor(cur_y, cur_x + 1);
+}
+
+void Display::move_mouse(int8_t new_mouse_y, int8_t new_mouse_x)
+{
+    if(new_mouse_x > width - 1)
+    {
+        new_mouse_x = width - 1;
+    }
+    else if(new_mouse_x < 0)
+    {
+        new_mouse_x = 0;
+    }
+    if(new_mouse_y > height - 1)
+    {
+        new_mouse_y = height - 1;
+    }
+    else if(new_mouse_y < 0)
+    {
+        new_mouse_y = 0;
+    }
+
+    if((mouse_x == new_mouse_x) && (mouse_y == new_mouse_y))
+    {
+        return;
+    }
+
+    if((mouse_x == cur_x) && (mouse_y == cur_y))
+    {
+        screen_buffer[mouse_y][mouse_x].set_bg_colour(white);
+        screen_buffer[mouse_y][mouse_x].set_fg_colour(black);
+    }
+    else
+    {
+        screen_buffer[mouse_y][mouse_x].set_bg_colour(black);
+        screen_buffer[mouse_y][mouse_x].set_fg_colour(white);
+    }
+
+    mouse_x = new_mouse_x;
+    mouse_y = new_mouse_y;
+
+    screen_buffer[mouse_y][mouse_x].set_bg_colour(red);
+    screen_buffer[mouse_y][mouse_x].set_fg_colour(white);
 }
 
 void Display::print_welcome_z()

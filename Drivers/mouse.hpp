@@ -4,7 +4,6 @@
 #include "types.hpp"
 #include "irq.hpp"
 #include "port.hpp"
-#include "port_slow.hpp"
 
 #include "display.hpp"
 
@@ -20,7 +19,6 @@ class MouseDriver : public InterruptHandler
     uint8_t offset;
     uint8_t buttons;
 
-    Cell    last_mouse_cursor_cell;
 public:
     MouseDriver(InterruptManager* manager, Display& display_);
     ~MouseDriver() = default;

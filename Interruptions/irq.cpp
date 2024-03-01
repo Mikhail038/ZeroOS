@@ -55,7 +55,33 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) :
                       code_segment, &asm_handle_irq_0x00, 0, IDT_INTERRUPT_GATE);
     set_interrupt_descriptor_table_entry(hardware_offset + 0x01, 
                       code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x02, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x03, 
+                      code_segment, &asm_handle_irq_0x00, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x04, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x05, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x06, 
+                      code_segment, &asm_handle_irq_0x00, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x07, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x08, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x09, 
+                      code_segment, &asm_handle_irq_0x00, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x0A, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x0B, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
     set_interrupt_descriptor_table_entry(hardware_offset + 0x0C, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x0D, 
+                      code_segment, &asm_handle_irq_0x00, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x0E, 
+                      code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
+    set_interrupt_descriptor_table_entry(hardware_offset + 0x0F, 
                       code_segment, &asm_handle_irq_0x01, 0, IDT_INTERRUPT_GATE);
 
     pic_master_command.write(0x11);
