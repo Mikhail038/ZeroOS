@@ -214,5 +214,4 @@ void KeyboardDriver::hex_print_key(uint8_t key)
 void KeyboardDriver::leha_loh_print_key(uint8_t key)
 {
     display.print_line("LEHA LOH ");
-
 }

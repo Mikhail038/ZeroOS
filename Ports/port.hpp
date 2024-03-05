@@ -4,7 +4,7 @@
 #include "types.hpp"
 
 template <typename data_size_t>
-class Port 
+class Port final
 {
 private:
     uint16_t number;

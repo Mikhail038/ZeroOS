@@ -7,7 +7,7 @@
 void putline(char* line);
 
 template <typename data_size_t>
-class PortSlow 
+class PortSlow final
 {
 private:
     uint16_t number;

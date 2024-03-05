@@ -9,7 +9,7 @@
 
 class InterruptHandler;
 
-class InterruptManager
+class InterruptManager final
 {
 protected:
     friend class InterruptHandler; 
@@ -18,7 +18,7 @@ protected:
 
     InterruptHandler* handlers[BYTE];
 
-    struct GateDescriptor
+    struct GateDescriptor final
     {
         uint16_t    handle_address_low_bits;
         uint16_t    gdt_code_segment_selector;
@@ -30,7 +30,7 @@ protected:
     
     static GateDescriptor interrupt_descriptor_table[BYTE];
 
-    struct InterruptDescriptorTablePointer
+    struct InterruptDescriptorTablePointer final
     {
         uint16_t size;
         uint32_t base;
@@ -58,7 +58,7 @@ public:
     void deactivate();
 
     static uint32_t handle_irq(uint8_t irq_number, uint32_t esp);
-    uint32_t do_handle_irq(uint8_t irq_number, uint32_t esp);
+    uint32_t do_handle_irq(uint8_t irq_number, uint32_t esp) const;
     
 
     static void asm_ignore_irq_();

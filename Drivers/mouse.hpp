@@ -7,7 +7,7 @@
 
 #include "display.hpp"
 
-class MouseDriver : public InterruptHandler
+class MouseDriver final : public InterruptHandler
 {
     Display& display;
 
@@ -23,9 +23,7 @@ public:
     MouseDriver(InterruptManager* manager, Display& display_);
     ~MouseDriver() = default;
 
-    virtual uint32_t handle_interrupt(uint32_t esp);
-
-private:
+    uint32_t handle_interrupt(uint32_t esp) override;
 };
 
 #endif                                                                                                                                                      

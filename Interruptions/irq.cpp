@@ -138,7 +138,7 @@ uint32_t InterruptManager::handle_irq(uint8_t irq_number, uint32_t esp)
     return esp;
 };
 
-uint32_t InterruptManager::do_handle_irq(uint8_t irq_number, uint32_t esp) 
+uint32_t InterruptManager::do_handle_irq(uint8_t irq_number, uint32_t esp) const
 {
     if (handlers[irq_number] != 0)
     {
