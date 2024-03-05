@@ -4,10 +4,10 @@
 #include "types.hpp"
 #include "irq.hpp"
 #include "port.hpp"
-
 #include "display.hpp"
+#include "driver.hpp"
 
-class MouseDriver final : public InterruptHandler
+class MouseDriver final : public InterruptHandler, public Driver 
 {
     Display& display;
 
@@ -24,6 +24,8 @@ public:
     ~MouseDriver() = default;
 
     uint32_t handle_interrupt(uint32_t esp) override;
+
+    void activate() override;
 };
 
 #endif                                                                                                                                                      

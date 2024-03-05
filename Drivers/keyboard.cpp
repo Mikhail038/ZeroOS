@@ -7,6 +7,9 @@ KeyboardDriver::KeyboardDriver(InterruptManager* interrupt_manager_, Display& di
     command_port(0x64),
     shift_pressed(false),
     ctrl_pressed(false)
+{}
+
+void KeyboardDriver::activate()
 {
     while (command_port.read() & 0x1)
     {

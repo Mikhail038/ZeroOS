@@ -15,12 +15,17 @@ OBJECTS = $(OBJECTS_DIRECTORY)/loader.o $(OBJECTS_DIRECTORY)/kernel.o
 OBJECTS += $(OBJECTS_DIRECTORY)/gdt.o $(OBJECTS_DIRECTORY)/display.o
 OBJECTS += $(OBJECTS_DIRECTORY)/irq.o $(OBJECTS_DIRECTORY)/irq_table.o
 OBJECTS += $(OBJECTS_DIRECTORY)/keyboard.o $(OBJECTS_DIRECTORY)/mouse.o
+OBJECTS += $(OBJECTS_DIRECTORY)/driver.o
 
 TRGT = zos_kernel
 
 # =========================================================================================== 
 
 all: MAKE_OBJ_DIR $(TRGT).bin
+
+$(OBJECTS_DIRECTORY)/driver.o: Drivers/driver.cpp
+	@g++ $(GPPPARAMS) -o $@ -c $<
+	@echo '=== Driver Manager built ==='
 
 $(OBJECTS_DIRECTORY)/mouse.o: Drivers/mouse.cpp
 	@g++ $(GPPPARAMS) -o $@ -c $<

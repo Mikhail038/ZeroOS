@@ -5,10 +5,10 @@
 #include "irq.hpp"
 #include "port.hpp"
 #include "port_slow.hpp"
-
 #include "display.hpp"
+#include "driver.hpp"
 
-class KeyboardDriver final : public InterruptHandler 
+class KeyboardDriver final : public InterruptHandler, public Driver 
 {
     Display& display;
 
@@ -23,6 +23,8 @@ public:
     ~KeyboardDriver() = default;
 
     uint32_t handle_interrupt(uint32_t esp) override;
+
+    void activate() override;
 
 private:
     void hex_print_key(uint8_t key);

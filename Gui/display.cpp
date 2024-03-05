@@ -113,6 +113,8 @@ Display::Display(Colour bg_colour_, Colour fg_colour_, uint8_t character_) :
         screen_buffer[y].set_fg_colour(fg_colour);
         screen_buffer[y].set_char(character);
     }
+
+    move_currsor(0, 0);
 };
 
 Display::Display(Cell cell) : 

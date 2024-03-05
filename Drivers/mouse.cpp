@@ -9,6 +9,9 @@ MouseDriver::MouseDriver(InterruptManager* interrupt_manager_, Display& display_
     command_port(0x64),
     offset(START_OFFSET), // start value may change
     buttons(0)
+{}
+
+void MouseDriver::activate()
 {
     display.move_mouse(display.height / 2, display.width / 2);
 
