@@ -11,7 +11,6 @@ Cell::Cell(uint8_t character_, Colour bg_colour_, Colour fg_colour_) : character
     set_fg_colour(fg_colour_);
 }
 
-
 void Cell::set_bg_colour(Colour colour_)
 {
     colour = colour & 0x0F;
@@ -29,17 +28,17 @@ void Cell::set_char(uint8_t character_)
     character = character_;
 }
 
-uint8_t Cell::get_bg_colour()
+uint8_t Cell::get_bg_colour() const
 {
     return colour >> 4;
 }
 
-uint8_t Cell::get_fg_colour()
+uint8_t Cell::get_fg_colour() const
 {
     return (colour & 0x0F) ;
 }
 
-uint8_t Cell::get_char()
+uint8_t Cell::get_char() const
 {
     return character;
 }
@@ -98,11 +97,6 @@ Cell& Line::operator[](uint16_t x)
     return cell_buffer[x];
 }
 
-const Cell& Line::operator[](uint16_t x) const
-{
-    return cell_buffer[x];
-}
-
 //----------------------------------------------------------------------------------------------------------------------------------
 
 Display::Display(Colour bg_colour_, Colour fg_colour_, uint8_t character_) : 
@@ -137,7 +131,6 @@ cur_x(0), cur_y(0)
         screen_buffer[y].set_char(character);
     }
 }
-
 
 void Display::set_bg_colour(Colour colour_)
 {
@@ -401,11 +394,6 @@ void Display::print_welcome_z()
 }
 
 Line& Display::operator[](uint16_t y)
-{
-    return screen_buffer[y];
-}
-
-const Line& Display::operator[](uint16_t y) const
 {
     return screen_buffer[y];
 }

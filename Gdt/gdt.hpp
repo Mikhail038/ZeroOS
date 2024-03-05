@@ -3,7 +3,7 @@
 
 #include "types.hpp"
 
-class SegmentDescriptor
+class SegmentDescriptor final
 {
 private:
     uint16_t limit_low;
@@ -21,7 +21,7 @@ public:
 
 } __attribute__((packed));
 
-class GlobalDescriptorTable
+class GlobalDescriptorTable final
 {
 public:
     SegmentDescriptor   null_segment_selector;

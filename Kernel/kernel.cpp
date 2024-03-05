@@ -20,9 +20,8 @@ extern "C" void kernel_main(void* multiboot_struture, uint32_t magic_number)
 {
     Display display({' ', black, white});
     display.move_currsor(0,0);
-    display.move_mouse(10, 20);
 
-    display.print_line("Chek our github:\n");
+    display.print_line("Check our github:\n");
 
     GlobalDescriptorTable gdt;
     InterruptManager interrupts(&gdt);

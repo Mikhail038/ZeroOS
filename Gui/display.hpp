@@ -26,7 +26,7 @@ enum Colour
     bright_white    = 0xF
 };
 
-class Cell
+class Cell final
 {
 private:
     uint8_t character;    
@@ -42,12 +42,13 @@ public:
     void set_fg_colour(Colour colour);
     void set_char(uint8_t character);
 
-    uint8_t get_char();
-    uint8_t get_bg_colour();
-    uint8_t get_fg_colour();
+    uint8_t get_char() const;
+    uint8_t get_bg_colour() const;
+    uint8_t get_fg_colour() const;
+
 } __attribute__((packed));
 
-class Line
+class Line final
 {
 private:
     Cell cell_buffer[width];
@@ -65,11 +66,9 @@ public:
     void set_line_from_three_one_colour(uint8_t colour_, uint8_t left_char, uint8_t mid_char, uint8_t right_char); 
 
     Cell& operator[](uint16_t x);
-
-    const Cell& operator[](uint16_t x) const;
 };
 
-class Display 
+class Display final
 {
 // private:
 public:
@@ -123,7 +122,6 @@ public:
     void move_mouse(int8_t new_mouse_y, int8_t new_mouse_x);
 
     Line& operator[](uint16_t y);
-    const Line& operator[](uint16_t y) const;
 };
 
 #endif
