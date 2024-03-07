@@ -1,6 +1,5 @@
 *.bin
 *.o
 *.iso
-Objects
+obj
 .vscode
-Shell

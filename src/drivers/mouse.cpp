@@ -1,4 +1,4 @@
-#include "mouse.hpp"
+#include <drivers/mouse.hpp>
 
 #define START_OFFSET 2
 

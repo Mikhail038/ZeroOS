@@ -1,5 +1,5 @@
-#include "types.hpp"
-#include "display.hpp"
+#include <common/types.hpp>
+#include <user_interface/display.hpp>
 
 //----------------------------------------------------------------------------------------------------------------------------------
 

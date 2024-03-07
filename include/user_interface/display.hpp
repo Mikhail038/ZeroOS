@@ -2,7 +2,7 @@
 #define DISPLAY_HPP
 
 
-#include "types.hpp"
+#include <common/types.hpp>
 
 static const uint16_t width = 80; 
 

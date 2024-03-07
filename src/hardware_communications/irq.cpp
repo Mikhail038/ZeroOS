@@ -1,5 +1,5 @@
-#include"irq.hpp"
-#include"display.hpp"
+#include<hardware_communications/irq.hpp>
+#include<user_interface/display.hpp>
 
 void putline(char* line)
 {

@@ -1,4 +1,4 @@
-#include "keyboard.hpp"
+#include <drivers/keyboard.hpp>
 
 KeyboardDriver::KeyboardDriver(InterruptManager* interrupt_manager_, Display& display_) :
     InterruptHandler(0x21, interrupt_manager_),

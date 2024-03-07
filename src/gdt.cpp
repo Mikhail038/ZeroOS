@@ -1,5 +1,5 @@
-#include "gdt.hpp"
-#include "types.hpp"
+#include <gdt.hpp>
+#include <common/types.hpp>
 
 #define GDT_SEGMENT_CODE_FLAGS 0x9A
 /*

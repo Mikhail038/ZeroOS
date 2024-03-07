@@ -1,11 +1,11 @@
 #ifndef IRQ_HPP
 #define IRQ_HPP
 
-#include "types.hpp"
-#include "port.hpp"
-#include "port_slow.hpp"
+#include <common/types.hpp>
+#include <hardware_communications/port.hpp>
+#include <hardware_communications/port_slow.hpp>
 
-#include "gdt.hpp"
+#include <gdt.hpp>
 
 class InterruptHandler;
 

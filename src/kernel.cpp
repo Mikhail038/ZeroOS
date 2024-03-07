@@ -1,10 +1,10 @@
-#include "types.hpp"
-#include "gdt.hpp"
-#include "display.hpp"
-#include "irq.hpp"
-#include "keyboard.hpp"
-#include "mouse.hpp"
-#include "driver.hpp"
+#include <common/types.hpp>
+#include <gdt.hpp>
+#include <user_interface/display.hpp>
+#include <hardware_communications/irq.hpp>
+#include <drivers/keyboard.hpp>
+#include <drivers/mouse.hpp>
+#include <drivers/driver.hpp>
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;

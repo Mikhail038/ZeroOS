@@ -1,12 +1,12 @@
 #ifndef KEYBOARD_HPP
 #define KEYBOARD_HPP
 
-#include "types.hpp"
-#include "irq.hpp"
-#include "port.hpp"
-#include "port_slow.hpp"
-#include "display.hpp"
-#include "driver.hpp"
+#include <common/types.hpp>
+#include <hardware_communications/irq.hpp>
+#include <hardware_communications/port.hpp>
+#include <hardware_communications/port_slow.hpp>
+#include <user_interface/display.hpp>
+#include <drivers/driver.hpp>
 
 class KeyboardDriver final : public InterruptHandler, public Driver 
 {

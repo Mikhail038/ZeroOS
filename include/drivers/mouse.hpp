@@ -1,11 +1,11 @@
 #ifndef MOUSE_HPP
 #define MOUSE_HPP
 
-#include "types.hpp"
-#include "irq.hpp"
-#include "port.hpp"
-#include "display.hpp"
-#include "driver.hpp"
+#include <common/types.hpp>
+#include <hardware_communications/irq.hpp>
+#include <hardware_communications/port.hpp>
+#include <user_interface/display.hpp>
+#include <drivers/driver.hpp>
 
 class MouseDriver final : public InterruptHandler, public Driver 
 {

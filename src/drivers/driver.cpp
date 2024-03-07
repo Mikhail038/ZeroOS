@@ -1,5 +1,4 @@
-#include "driver.hpp"
-#include "types.hpp"
+#include <drivers/driver.hpp>
 
 void    Driver::activate()
 {
